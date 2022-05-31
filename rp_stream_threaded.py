@@ -63,7 +63,7 @@ class SocketClientThread(threading.Thread):
         self.alive.set()
         self.socket = None
         
-        self.HEADER_SIZE=52
+        self.HEADER_SIZE=60
         self.VERBOSE=0
         self.PLOT=0
         self.data_all_ch1=[]
@@ -135,7 +135,7 @@ class SocketClientThread(threading.Thread):
             tdataobj={}
             bytes_data = self._recvall(self.socket,self.HEADER_SIZE)
             if bytes_data!=-1:
-                [header,index,lostrate,oscrate,buffsize,ch1_size,ch2_size,resolution]=struct.unpack('16sQQLLLLL',bytes_data[0:52])
+                [header,index,lostrate,oscrate,buffsize,ch1_size,ch2_size,resolution]=struct.unpack('<16sQQLLLLL',bytes_data[0:52])
                 dt=np.dtype(np.int16)
                 bytes_data1=self._recvall(self.socket,ch1_size)
                 if bytes_data1!=-1:  #recvall returns -1 when it fails
